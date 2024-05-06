@@ -1,3 +1,4 @@
+import { addUser, getUser, UserType } from "@/services/users"
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 
@@ -9,25 +10,45 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
+    async signIn({ user }) {
+      if (!user.email) {
+        return false
+      }
+
+      const existing_user = await checkUser(user.email)
+      if (existing_user.length === 0) {
+        const res = await addingUser({
+          name: user.name || "",
+          nickname: user?.email.split("@")[0] || "",
+          email: user.email,
+          image: user.image || "",
+        })
+        if (res.error) {
+          return false
+        }
+      }
+      return true
+    },
     async session({ session }) {
-      console.log(session)
       const user = session?.user
       if (user) {
         session.user = {
           ...user,
-          username: user.email?.split("@")[0] || "",
+          nickname: user.email?.split("@")[0] || "",
         }
       }
       return session
     },
   },
 })
-// {
-//     user: {
-//       name: '김주연',
-//       email: 'juyeon9391@gmail.com',
-//       image: 'https://lh3.googleusercontent.com/a/ACg8ocLVhXOu3KtHlPM8kQr9MedfHyjggDvc72ra03VmK-Gu8EJ7_w=s96-c'
-//     },
-//     expires: '2024-06-05T00:57:04.567Z'
-//   }
+
+const checkUser = async (email: string) => {
+  const { data } = await getUser(email)
+  return data ? data : []
+}
+
+const addingUser = async (user: UserType) => {
+  const { data, error } = await addUser(user)
+  return { data, error }
+}
 export { handler as GET, handler as POST }

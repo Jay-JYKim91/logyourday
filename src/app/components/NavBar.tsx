@@ -9,7 +9,7 @@ export default function NavBar() {
 
   return (
     <div>
-      {user ? user.username : ""}
+      {user ? user.nickname : ""}
       {session ? (
         <button onClick={() => signOut()}>sign out</button>
       ) : (
