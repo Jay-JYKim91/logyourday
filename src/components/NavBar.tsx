@@ -3,8 +3,8 @@
 import React from "react"
 import { useSession, signOut, signIn } from "next-auth/react"
 
-export default function NavBar() {
-  const { data: session } = useSession()
+export default function NavBar({ session }: any) {
+  // const { data: session } = useSession()
   const user = session?.user
 
   return (

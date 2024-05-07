@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/toaster"
 import type { Metadata } from "next"
 import { Gothic_A1 } from "next/font/google"
 import AuthContext from "./context/AuthContext"
@@ -21,7 +22,10 @@ export default function RootLayout({
   return (
     <AuthContext>
       <html lang="en">
-        <body className={gothic.className}>{children}</body>
+        <body className={gothic.className}>
+          <main>{children}</main>
+          <Toaster />
+        </body>
       </html>
     </AuthContext>
   )
