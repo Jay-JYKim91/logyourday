@@ -19,7 +19,7 @@ export default function Home() {
   }, [session])
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24 bg-red-900">
+    <div className="min-h-screen" style={{ backgroundColor: "honeydew" }}>
       <NavBar session={session} />
       <p>WE COOL?</p>
       <p>어때?</p>
